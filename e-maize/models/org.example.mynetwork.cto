@@ -1,0 +1,51 @@
+namespace org.example.mynetwork
+
+abstract participant Person identified by personID {
+  o String personID
+  o String firstName
+  o String lastName
+  o String email
+  o String county
+}
+
+participant Farmer extends Person {
+
+}
+
+participant Buyer extends Person {
+    o Double accountBalance
+}
+
+participant Transporter extends Person {
+
+}
+
+asset Product identified by productID {
+  o String productID
+  o String amount
+  --> Person owner
+}
+
+transaction Trade {
+  --> Product product
+  --> Buyer buyer
+}
+
+/**
+ * Defines a contract between a Farmer and a Buyer to ship using
+ * a Transporter, paying a set unit price. The unit price is multiplied by
+ * a penality factor proportional to the deviation from the min and max
+ * negociated temperatures for the shipment.
+ */
+asset Contract identified by contractId {
+  o String contractId
+  --> Farmer farmer
+  --> Buyer buyer
+  --> Transporter transporter
+  o DateTime arrivalDateTime
+  o Double unitPrice
+  o Double minPenaltyFactor
+  o Double maxPenaltyFactor
+}
+
+
